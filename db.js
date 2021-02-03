@@ -1,7 +1,7 @@
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const Sequelize = require('sequelize');
-const { STRING, INTEGER } = Sequelize;
+const { STRING, INTEGER, DATE } = Sequelize;
 const config = {
   logging: false
 };
@@ -16,10 +16,24 @@ const User = conn.define('user', {
   githubId: INTEGER
 });
 
+const UserLogin = conn.define('login', {
+    loginDate: DATE
+})
+
+User.hasMany(UserLogin)
+UserLogin.belongsTo(User)
+
 User.byToken = async(token)=> {
   try {
     const { id } = await jwt.verify(token, process.env.JWT);
-    const user = await User.findByPk(id);
+    const user = await User.findOne({
+        where: {id},
+        include: [
+            {
+                model: UserLogin
+            }
+        ]
+    });
     if(user){
       return user;
     }
@@ -85,6 +99,11 @@ const getUserFromGithubUser = async({ login, id, ...other})=> {
       githubId: id
     });
   }
+  const login = await UserLogin.create({
+      loginDate: new Date()
+  })
+  login.userId = user.id
+  await login.save()
   return user;
 };
 
