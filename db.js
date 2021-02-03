@@ -2,6 +2,8 @@ const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const Sequelize = require('sequelize');
 const { STRING, INTEGER, DATE } = Sequelize;
+// process.env.GITHUB_CLIENT_ID
+// process.env.GITHUB_CLIENT_SECRET
 const config = {
   logging: false
 };
@@ -99,11 +101,11 @@ const getUserFromGithubUser = async({ login, id, ...other})=> {
       githubId: id
     });
   }
-  const login = await UserLogin.create({
+  const userlogin = await UserLogin.create({
       loginDate: new Date()
   })
-  login.userId = user.id
-  await login.save()
+  userlogin.userId = user.id
+  await userlogin.save()
   return user;
 };
 

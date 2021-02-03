@@ -52,6 +52,7 @@
             );
           }
           else {
+              console.log(auth)
             return (
               <div>
                 <button onClick={ logout }>Logout ({ auth.username})</button>
@@ -59,10 +60,10 @@
                     Logins:
                     <ul>
                         {
-                            auth.userlogins.map((log)=>{
+                            auth.logins.map((log)=>{
                                 return (
                                     <li>
-                                        {new Date(login.loginDate).toGMTString()}
+                                        {new Date(login.loginDate).toUTCString()}
                                     </li>
                                 )
                             })
