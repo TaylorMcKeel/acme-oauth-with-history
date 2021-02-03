@@ -55,6 +55,20 @@
             return (
               <div>
                 <button onClick={ logout }>Logout ({ auth.username})</button>
+                <div>
+                    Logins:
+                    <ul>
+                        {
+                            auth.userlogins.map((log)=>{
+                                return (
+                                    <li>
+                                        {new Date(login.loginDate).toGMTString()}
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+                </div>
               </div>
             );
           }
